@@ -1,5 +1,4 @@
 //server.js
-
 let express = require('express');
 let app = new express();
 let server = require('http').createServer(app);
@@ -75,7 +74,8 @@ app.post('/user/auth', (req, res) => {
                 return res.json({success: false, message: 'Failed to authenticate token.'})
             } else {
                 req.decoded = decoded
-                console.log(req.decoded.name)
+                console.log("test: jwt.req.decoded.name: " + req.decoded.name)
+                console.log("test: jwt.req.decoded.password: " + req.decoded.password)
                 //认证成功
                 res.write("200")
                 res.end();
@@ -86,18 +86,22 @@ app.post('/user/auth', (req, res) => {
 app.post('/user/edit', (req, res) => {
     if (req.body.pwd && req.body.ava) {    //不可以同时修改，会爆炸！！！！！！！！
         // todo
-        res.write("gg");
-        res.end();
-        // edit(req.body.user_info, req.body.pwd, req.body.ava, result => {
-        //     res.write(result);
-        //     res.end();
-        // });
+        //密码和头像不可同时修改
+        res.write("gg")
+        res.end()
     }
     edit(req.body.user_info, req.body.pwd, req.body.ava, result => {
-        res.write(result);
-        res.end();
-    });
-    res.write("nothing changed");
+        if (result === "1") {
+            res.write("200")
+        } else if (result === "2") {
+            res.write("201")
+        } else if (result === "-1") {
+            res.write("500")
+        } else {
+            res.write("501")
+        }
+        res.end()
+    })
 })
 //服务器监听所有客户端，并返回该新连接对象
 io.sockets.on('connection', socket => {
