@@ -13,17 +13,17 @@ function login(user_data, callback) {
                 query(db, collection, user_data, function(query_password_result) {
                     if (query_password_result === 1) {
                         console.log("登陆成功！");
-                        callback("yes")
+                        callback("1");
                         db.close();
                     } else {
                         console.log("密码错误！");
-                        callback("wrong pwd");
+                        callback("-2");
                         db.close();
                     }
                 });
             } else {
                 console.log("请先注册！");
-                callback("please register");
+                callback("-1");
                 db.close();
             }
         });

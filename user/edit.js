@@ -14,30 +14,30 @@ function edit(user_info, changePassword, changeAvatar, callback) {
         const whereName = {"name": user_info.name};
         if (changePassword === 1) {
             const replacePwd = {"password": user_info.password};
-            update(db, collection, whereName, replacePwd, function(update_result) {
+            update(db, collection, whereName, replacePwd, update_result => {
                 if (update_result === -1) {
                     console.log("update ERROR");
-                    callback("pwd change error!");
+                    callback("-1");
                     db.close();
                 }
                 if (update_result === 1) {
                     console.log("Update password DONE!!");
-                    callback("pwd change done!");
+                    callback("1");
                     db.close();
                 }
             });
         }
         if (changeAvatar === 1) {
-            var replaceAva = {"avatar_path": user_info.avatar_path};
-            update(db, collection, whereName, replaceAva, function(update_result) {
+            const replaceAva = {"avatar_path": user_info.avatar_path};
+            update(db, collection, whereName, replaceAva, update_result => {
                 if (update_result === -1) {
                     console.log("update ERROR");
-                    callback("avatar update ERROR!");
+                    callback("-2");
                     db.close();
                 }
                 if (update_result === 1) {
                     console.log("Update avatar DONE!!");
-                    callback("avatar update DONE!");
+                    callback("2");
                     db.close();
                 }
             });

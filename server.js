@@ -17,33 +17,65 @@ app.use(bodyParser.urlencoded({            //此项必须在 bodyParser.json 下
 }));
 
 console.log("hello, the server is running at port: 2333 , HAVE A NICE DAY! ");
+
 app.post('/user/register', (req, res) => {
     register(req.body, result => {
-        res.write(result);
-        res.end();
+        //注册成功
+        if (result === "1") {
+            res.write("200");
+            res.end();
+        }
+        //注册失败
+        if (result === "-1") {
+            //res.send(400);
+            res.write("404");
+            res.end();
+        }
+        //用户已注册
+        if (result === "-2") {
+            res.write("500");
+            res.end();
+        }
     });
 });
 app.post('/user/login', (req, res) => {
     login(req.body, result => {
-        res.write(result);
-        res.end();
+        //登陆成功
+        if (result === "1") {
+            res.write("200");
+            res.end();
+        }
+        //密码错误
+        if (result === "-2") {
+            res.write("400");
+            res.end();
+        }
+        //用户未注册
+        if (result === "-1") {
+            res.write("404");
+            res.end();
+        }
     });
 });
 app.post('/user/edit', (req, res) => {
-    if (req.body.pwd && req.body.ava) {    //不可以同时修改，会爆炸！！！！！！！！
+    if (req.body.pwd && req.body.ava) {
         // todo
-        res.write("gg");
+        //不可同时修改密码和头像
+        res.write("500");
         res.end();
-        // edit(req.body.user_info, req.body.pwd, req.body.ava, result => {
-        //     res.write(result);
-        //     res.end();
-        // });
     }
     edit(req.body.user_info, req.body.pwd, req.body.ava, result => {
-        res.write(result);
+        if (result === "1") {     // 修改密码成功
+            res.write("200");
+        } else if (result === "2") {   // 修改头像成功
+            res.write("201");
+        } else if (result === "-1") {  //修改密码失败
+            res.write("500");
+        } else {     //修改头像失败
+            res.write("501");
+        }
         res.end();
     });
-    res.write("nothing changed");
 })
 //服务器监听所有客户端，并返回该新连接对象
 io.sockets.on('connection', socket => {

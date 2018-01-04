@@ -22,18 +22,18 @@ function register(testdata, callback) {
         query(db, collection, {"name": testdata.name}, function(query_result) {
             if (query_result === 1) {
                 console.log(testdata);
-                callback("用户已注册，不可重复注册");
                 console.log("用户已注册，不可重复注册");
+                callback("-2");
                 db.close();
             } else if(query_result === -1) {
-                callback("出错了!!!")
+                callback("-1")
                 console.log("出错了!!!");
                 db.close();
             }else {
                 insertData(testdata, db, collection, function(insert_result) {
                     console.log(insert_result);
                     console.log("注册成功！");
-                    callback("注册成功！")
+                    callback("1")
                     db.close();
                 });
             }
