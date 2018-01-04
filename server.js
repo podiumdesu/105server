@@ -91,13 +91,13 @@ app.post('/user/edit', (req, res) => {
         res.end()
     }
     edit(req.body.user_info, req.body.pwd, req.body.ava, result => {
-        if (result === "1") {
+        if (result === "1") {   //密码修改成功
             res.write("200")
-        } else if (result === "2") {
+        } else if (result === "2") {   //头像修改成功
             res.write("201")
-        } else if (result === "-1") {
+        } else if (result === "-1") {   //密码修改失败
             res.write("500")
-        } else {
+        } else {      //头像修改失败
             res.write("501")
         }
         res.end()
