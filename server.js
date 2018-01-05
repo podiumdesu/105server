@@ -12,41 +12,41 @@ var edit = require("./user/edit")
 var auth = require("./user/auth")
 var addFriend = require("./friend/addFriend")
 
-var config = require("./config/config");
+var config = require("./config/config")
 
 //将 socket.io 绑定到服务器上，于是任何连接到该服务器的客户端都具备了实时通信功能。
-server.listen(2333);
+server.listen(2333)
 //Warning: express4.0 seperate the body-parser, so we need to config it.
-app.set("secret", config.secret);
-app.use(bodyParser.json({limit: '1mb'}));  //body-parser 解析json格式数据
+app.set("secret", config.secret)
+app.use(bodyParser.json({limit: '1mb'}))  //body-parser 解析json格式数据
 app.use(bodyParser.urlencoded({            //此项必须在 bodyParser.json 下面,为参数编码
   extended: true
-}));
+}))
 
-console.log("hello, the server is running at port: 2333 , HAVE A NICE DAY! ");
+console.log("hello, the server is running at port: 2333 , HAVE A NICE DAY! ")
 app.post('/user/register', (req, res) => {
     register(req.body, result => {
         //注册成功
         if (result === "1") {
-            res.write("200");
-            res.end();
+            res.write("200")
+            res.end()
         }
         //注册失败
         if (result === "-1") {
-            res.write("400");
-            res.end();
+            res.write("400")
+            res.end()
         }
         //用户已注册
         if (result === "-2") {
-            res.write("500");
-            res.end();
+            res.write("500")
+            res.end()
         }
-    });
-});
+    })
+})
 app.post('/user/login', (req, res) => {
     login(req.body, result => {
         //登陆成功
-        console.log(req.body);
+        console.log(req.body)
         if (result === "1") {
             let token = jwt.sign(req.body, app.get("secret"), {
                 expiresIn: 60*60*24
@@ -58,16 +58,16 @@ app.post('/user/login', (req, res) => {
         }
         //密码错误
         if (result === "-2") {
-            res.write("400");
-            res.end();
+            res.write("400")
+            res.end()
         }
         //用户未注册
         if (result === "-1") {
-            res.write("404");
-            res.end();
+            res.write("404")
+            res.end()
         }
-    });
-});
+    })
+})
 
 app.post('/user/auth', (req, res) => {
     // if (token) {
@@ -80,11 +80,11 @@ app.post('/user/auth', (req, res) => {
     //             console.log("test: jwt.req.decoded.password: " + req.decoded.password)
     //             //认证成功
     //             res.write("200")
-    //             res.end();
+    //             res.end()
     //         }
     //     })
     // }
-    var token = req.body.token || req.headers['x-access-token'];
+    var token = req.body.token || req.headers['x-access-token']
     auth(token, result => {
         if (result === '1') {
             console.log("登陆成功")
@@ -135,8 +135,8 @@ app.post('/user/edit', (req, res) => {
 })
 //服务器监听所有客户端，并返回该新连接对象
 io.sockets.on('connection', socket => {
-    socket.emit('news', { hello: 'world' });
+    socket.emit('news', { hello: 'world' })
     socket.on('my other event', data => {
-      console.log(data);
-    });
-});
+      console.log(data)
+    })
+})
