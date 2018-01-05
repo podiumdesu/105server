@@ -5,15 +5,7 @@ var url = 'mongodb://localhost:27017/userlist'
 // var datatestdd = require("../ddd").testdata
 /***** datatest应该为从client处传过来的JSON信息 ******/
 var query = require("./query")
-var insertData = function(datatest, db, collection, callback) {
-    collection.insert(datatest, function(err, result) {
-        if (err) {
-            console.log("ERROR:" + err)
-            return
-        }
-        callback(result)
-    })
-}
+var insertData = require("../common/insertData")
 
 function register(testdata, callback) {
     MongoClient.connect(url, function(err, db) {

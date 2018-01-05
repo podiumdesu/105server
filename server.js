@@ -45,7 +45,7 @@ app.post('/user/register', (req, res) => {
 })
 app.post('/user/login', (req, res) => {
     login(req.body, result => {
-        //登陆成功
+        //登录成功
         console.log(req.body)
         if (result === "1") {
             let token = jwt.sign(req.body, app.get("secret"), {
@@ -70,26 +70,12 @@ app.post('/user/login', (req, res) => {
 })
 
 app.post('/user/auth', (req, res) => {
-    // if (token) {
-    //     jwt.verify(token, app.get("secret"), (err, decoded) => {
-    //         if (err) {
-    //             return res.json({success: false, message: 'Failed to authenticate token.'})
-    //         } else {
-    //             req.decoded = decoded
-    //             console.log("test: jwt.req.decoded.name: " + req.decoded.name)
-    //             console.log("test: jwt.req.decoded.password: " + req.decoded.password)
-    //             //认证成功
-    //             res.write("200")
-    //             res.end()
-    //         }
-    //     })
-    // }
     var token = req.body.token || req.headers['x-access-token']
     auth(token, result => {
         if (result === '1') {
-            console.log("登陆成功")
+            console.log("登录成功")
             res.status(200)
-            res.write("登陆成功")
+            res.write("登录成功")
             res.end()
         } else if (result === 'wrong pwd') {
             console.log("密码错误")
@@ -102,6 +88,30 @@ app.post('/user/auth', (req, res) => {
             res.write('wrong authentication to this token')
             res.end()
         } else {}
+    })
+})
+
+app.post('/friend/addFriend', (req, res) => {
+    addFriend(req.body, result => {
+        if (result === '1') {
+            res.write('done')
+            res.end()
+        } else if (result === '0') {
+            res.write("you have been friends ever")
+            res.end()
+        } else if (result === '-2') {
+            res.write("Friend hasn\'t registered")
+            res.end()
+        } else if (result === '-5') {
+            res.write("bad token")
+            res.end()
+        } else if (result === '-6') {
+            res.write("Please update the token")
+            res.end()
+        } else {
+            res.write('error')
+            res.end()
+        }
     })
 })
 app.post('/user/edit', (req, res) => {
