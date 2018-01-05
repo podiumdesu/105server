@@ -2,7 +2,8 @@ var app = require('http').createServer(handler)
 var io = require('socket.io')(app);
 var fs = require('fs');
 
-app.listen(2333);
+const PORT = 8888;
+app.listen(PORT);
 
 function handler (req, res) {
   fs.readFile(__dirname + '/index.html',
@@ -25,11 +26,9 @@ io.on('connection', function (socket) {
 
   socket.on('disconnet', function() {
       io.sockets.emit('leave', username)
-  }
+  })
 
   socket.on('sendMessage', function(data) {
       io.sockets.emit('receiveMessage', data)
   })
-
-
 });

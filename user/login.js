@@ -1,6 +1,5 @@
 var MongoClient = require('mongodb').MongoClient;
 var url = 'mongodb://localhost:27017/userlist';
-var datatest = require("../ddd").testdata;
 var query = require("./query");
 
 function login(user_data, callback) {
